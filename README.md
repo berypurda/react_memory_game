@@ -1,2 +1,1 @@
-# React-Firebase
-All course files for the Net Ninja React &amp; Firebase course.
+My first React project
