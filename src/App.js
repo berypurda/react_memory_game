@@ -1,9 +1,11 @@
-import './App.css';
+import './App.css'
 import React, { useState } from 'react'
 import Title from './components/Title'
-import Model from './components/Model';
+import Model from './components/Model'
+import EventList from './components/EventList'
 
 function App() {
+  const [showModel, setShowModel] = useState(false)
   const [showEvents, setShowEvents] = useState(true)
   const [events, setEvents] = useState([
     { title: "mario's birthday bash", id: 1 },
@@ -11,56 +13,45 @@ function App() {
     { title: "race on moo moo farm", id: 3 }
   ])
 
-  console.log(showEvents)
-
   const handleClick = (id) => {
-    setEvents((prevEvents) => {
-      return prevEvents.filter((event) => {
-        return event.id !== id
-      })
+    setEvents(prevEvents => {
+      return prevEvents.filter(event => id !== event.id)
     })
-    console.log(id)
+  }
+
+  const handleSwitch = () => {
+    if (showModel === true)
+      setShowModel(false)
+    else
+      setShowModel(true)
   }
 
   const subtitle = "All the latest events in Marioland"
 
   return (
     <div className="App">
-      <Model />
-      <Title title="Events in you area" subtitle={subtitle} />
+      <Title title="Marioland Events" subtitle={subtitle} />
 
       {showEvents && (
         <div>
-          <button onClick={() => setShowEvents(false)}>hide events</button>
+          <button onClick={() => setShowEvents(false)}>Hide Events</button>
         </div>
       )}
       {!showEvents && (
         <div>
-          <button onClick={() => setShowEvents(true)}>show events</button>
+          <button onClick={() => setShowEvents(true)}>Show Events</button>
         </div>
       )}
-      {showEvents && events.map((event, index) => (
-        <React.Fragment key={event.id}>
-          <h2>{index} - {event.title}</h2>
-          <button onClick={() => handleClick(event.id)}>delete event</button>
-        </React.Fragment>
-      ))}
+      {showEvents && <EventList events={events} handleClick={handleClick} />}
 
-      {/* <Model>
-        <h2>10% off coupon</h2>
-        <p>use code :) pls</p>
-      </Model> */}
-      <Model>
-        <h2>Terms and conditions</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-          veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-          ea commodo consequat. Duis aute irure dolor in reprehenderit
-          in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          Excepteur sint occaecat cupidatat non proident, sunt in cu
-          lpa qui officia deserunt mollit anim id est laborum.</p>
-        <a href='#'>find out more...</a>
-      </Model>
+      <button onClick={handleSwitch}>show Model</button>
+
+      {showModel && (
+        <Model handleSwitch={handleSwitch}>
+          <h2>Terms and Conditions</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error odit nam et reprehenderit quibusdam temporibus officia dolorum quo sint nemo quis, laborum, quasi nisi fugit praesentium debitis repudiandae! Sapiente, omnis.</p>
+        </Model>
+      )}
     </div>
   );
 }
