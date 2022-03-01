@@ -3,15 +3,19 @@ import React, { useState } from 'react'
 import Title from './components/Title'
 import Model from './components/Model'
 import EventList from './components/EventList'
+import NewEventForm from './components/NewEventForm'
 
 function App() {
   const [showModel, setShowModel] = useState(false)
   const [showEvents, setShowEvents] = useState(true)
-  const [events, setEvents] = useState([
-    { title: "mario's birthday bash", id: 1 },
-    { title: "bowser's live stream", id: 2 },
-    { title: "race on moo moo farm", id: 3 }
-  ])
+  const [events, setEvents] = useState([])
+
+  const addEvent = (event) => {
+    setEvents((prevEvents) => {
+      return [...prevEvents, event]
+    })
+    setShowModel(false)
+  }
 
   const handleClick = (id) => {
     setEvents(prevEvents => {
@@ -19,12 +23,10 @@ function App() {
     })
   }
 
-  const handleSwitch = () => {
-    if (showModel === true)
-      setShowModel(false)
-    else
-      setShowModel(true)
+  const handleOpen = () => {
+    setShowModel(true)
   }
+
 
   const subtitle = "All the latest events in Marioland"
 
@@ -44,14 +46,15 @@ function App() {
       )}
       {showEvents && <EventList events={events} handleClick={handleClick} />}
 
-      <button onClick={handleSwitch}>show Model</button>
-
       {showModel && (
-        <Model handleSwitch={handleSwitch} isSalesModel={true}>
-          <h2>Terms and Conditions</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error odit nam et reprehenderit quibusdam temporibus officia dolorum quo sint nemo quis, laborum, quasi nisi fugit praesentium debitis repudiandae! Sapiente, omnis.</p>
+        <Model isSalesModel={true}>
+          <NewEventForm addEvent={addEvent} />
         </Model>
       )}
+
+      <button onClick={handleOpen}>Add New Event</button>
+
+
     </div>
   );
 }
